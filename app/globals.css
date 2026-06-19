@@ -50,92 +50,99 @@
 }
 
 :root {
-  /* Slate 50 para fondos generales e inputs */
-  --background: #f8fafc;
-  /* Slate 900 para el texto principal */
-  --foreground: #0f172a;
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-  --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  /* Green 500 para los botones y acentos */
-  --primary: #22c55e;
-  --primary-foreground: #ffffff;
-  --secondary: #e2e8f0;
-  --secondary-foreground: #0f172a;
-  --muted: #f1f5f9;
-  /* Slate 500 para texto secundario e iconos */
-  --muted-foreground: #64748b;
-  --accent: #f1f5f9;
-  --accent-foreground: #0f172a;
-  /* Red 500 para alertas y errores */
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --border: #e2e8f0;
-  --input: #f8fafc;
-  --ring: #22c55e;
+  /* Palette (Tailwind equivalence)
+     Slate 900: #0f172a — primary dark text / dark backgrounds
+     Slate 500: #64748b — secondary text / icons
+     Slate 50 : #f8fafc — light backgrounds / inputs
+     Green 500: #22c55e — accents / success
+     Red 500  : #ef4444 — destructive / errors
+  */
+  --slate-900: #0f172a;
+  --slate-500: #64748b;
+  --slate-50: #f8fafc;
+  --green-500: #22c55e;
+  --green-500-rgb: 34 197 94;
+  --red-500: #ef4444;
 
-  /* Colores para las gráficas */
-  --chart-1: #22c55e;
-  --chart-2: #0f172a;
-  --chart-3: #64748b;
-  --chart-4: #e2e8f0;
-  --chart-5: #ef4444;
+  /* Semantic tokens — Light mode */
+  --background: var(--slate-50);
+  --card: var(--slate-50);
+  --popover: var(--slate-50);
+  --input: var(--slate-50);
+
+  --foreground: var(--slate-900);
+  --card-foreground: var(--slate-900);
+  --popover-foreground: var(--slate-900);
+
+  --primary: var(--slate-900);
+  /* Buttons, primary text */
+  --primary-foreground: var(--slate-50);
+
+  --accent: var(--green-500);
+  --accent-foreground: var(--slate-50);
+  --ring: var(--green-500-rgb);
+
+  --destructive: var(--red-500);
+  --destructive-foreground: var(--slate-50);
+
+  --muted-foreground: var(--slate-500);
+  --secondary-foreground: var(--slate-500);
+
+  --border: rgba(100, 116, 139, 0.25);
+  /* subtle slate-500 border */
+  --muted: var(--slate-50);
+  --secondary: var(--slate-500);
+
+  /* Sidebar Light */
+  --sidebar: var(--slate-50);
+  --sidebar-foreground: var(--slate-900);
+  --sidebar-primary: var(--slate-900);
+  --sidebar-primary-foreground: var(--slate-50);
+  --sidebar-accent: var(--green-500);
+  --sidebar-accent-foreground: var(--slate-50);
+  --sidebar-border: rgba(100, 116, 139, 0.16);
+  --sidebar-ring: var(--green-500);
+
   --radius: 0.625rem;
-
-  /* Sidebar adaptado al tema claro */
-  --sidebar: #f8fafc;
-  --sidebar-foreground: #0f172a;
-  --sidebar-primary: #22c55e;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e2e8f0;
-  --sidebar-accent-foreground: #0f172a;
-  --sidebar-border: #e2e8f0;
-  --sidebar-ring: #22c55e;
 }
 
 .dark {
-  /* Slate 900 para el fondo oscuro */
-  --background: #0f172a;
-  /* Slate 50 para el texto principal en oscuro */
-  --foreground: #f8fafc;
-  --card: #1e293b;
-  --card-foreground: #f8fafc;
-  --popover: #1e293b;
-  --popover-foreground: #f8fafc;
-  /* Green 500 se mantiene como primario */
-  --primary: #22c55e;
-  --primary-foreground: #ffffff;
-  --secondary: #334155;
-  --secondary-foreground: #f8fafc;
-  --muted: #1e293b;
-  /* Slate 500 para texto secundario */
-  --muted-foreground: #64748b;
-  --accent: #1e293b;
-  --accent-foreground: #f8fafc;
-  /* Red 500 para alertas */
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --border: #334155;
-  --input: #1e293b;
-  --ring: #22c55e;
+  /* Dark mode — keep same palette variables but swap semantic tokens */
+  --background: var(--slate-900);
+  --card: var(--slate-900);
+  --popover: var(--slate-900);
+  --input: var(--slate-900);
 
-  /* Colores para las gráficas (Dark mode) */
-  --chart-1: #22c55e;
-  --chart-2: #f8fafc;
-  --chart-3: #64748b;
-  --chart-4: #334155;
-  --chart-5: #ef4444;
+  --foreground: var(--slate-50);
+  --card-foreground: var(--slate-50);
+  --popover-foreground: var(--slate-50);
 
-  /* Sidebar adaptado al tema oscuro */
-  --sidebar: #0f172a;
-  --sidebar-foreground: #f8fafc;
-  --sidebar-primary: #22c55e;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1e293b;
-  --sidebar-accent-foreground: #f8fafc;
-  --sidebar-border: #334155;
-  --sidebar-ring: #22c55e;
+  /* Make primary in dark mode a visible accent (green) for buttons */
+  --primary: var(--green-500);
+  --primary-foreground: var(--slate-900);
+
+  --accent: var(--green-500);
+  --accent-foreground: var(--slate-900);
+  --ring: var(--green-500-rgb);
+
+  --destructive: var(--red-500);
+  --destructive-foreground: var(--slate-50);
+
+  --muted-foreground: var(--slate-500);
+  --secondary-foreground: var(--slate-500);
+
+  --border: rgba(100, 116, 139, 0.12);
+  --muted: var(--slate-900);
+  --secondary: var(--slate-500);
+
+  --sidebar: var(--slate-900);
+  --sidebar-foreground: var(--slate-50);
+  --sidebar-primary: var(--green-500);
+  --sidebar-primary-foreground: var(--slate-900);
+  --sidebar-accent: var(--green-500);
+  --sidebar-accent-foreground: var(--slate-50);
+  --sidebar-border: rgba(100, 116, 139, 0.16);
+  --sidebar-ring: var(--green-500);
 }
 
 @layer base {
