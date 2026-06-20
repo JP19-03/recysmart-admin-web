@@ -27,6 +27,12 @@ export async function apiFetch<T>(
     }
 
     if (!res.ok) {
+        if (res.status === 401) {
+            if (typeof window !== "undefined") {
+                const { signOut } = require("next-auth/react");
+                signOut({ callbackUrl: "/login" });
+            }
+        }
         const error = ErrorResponseSchema.safeParse(json);
         if (error.success) {
             throw new ApiError(error.data.message);
