@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { Citizen } from "@/src/schemas";
 import {
   Coins,
@@ -9,10 +9,10 @@ import {
   Trees,
   FileText,
   Ban,
-  Unlock,
-  Loader2,
-  ChevronLeft,
+  Unlock, ChevronLeft,
   ChevronRight,
+  Globe,
+  Leaf
 } from "lucide-react";
 
 interface CitizensTableProps {
@@ -72,6 +72,12 @@ export function CitizensTable({
 
   const getLevelStyling = (levelTitle: string = "Eco Beginner") => {
     const title = levelTitle.toLowerCase();
+    if (title.includes("guardian")) {
+      return {
+        bg: "bg-blue-50 text-blue-700 border border-blue-200",
+        icon: Globe,
+      };
+    }
     if (title.includes("master")) {
       return {
         bg: "bg-yellow-50 text-yellow-700 border border-yellow-200",
@@ -82,6 +88,12 @@ export function CitizensTable({
       return {
         bg: "bg-emerald-50 text-emerald-700 border border-emerald-200",
         icon: Trees,
+      };
+    }
+    if (title.includes("apprentice")) {
+      return {
+        bg: "bg-amber-50 text-amber-600 border border-amber-200",
+        icon: Leaf,
       };
     }
     return {
