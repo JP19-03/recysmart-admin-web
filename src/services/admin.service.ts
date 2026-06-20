@@ -1,5 +1,5 @@
 import { apiFetch } from "../lib/api";
-import { CitizensResponseSchema, DashboardAPIResponseSchema } from "../schemas";
+import { CitizensResponseSchema, DashboardAPIResponseSchema, LevelsResponseSchema } from "../schemas";
 
 export const adminService = {
     getDashboardData: async (token: string) => {
@@ -16,5 +16,14 @@ export const adminService = {
         }, token);
 
         return CitizensResponseSchema.parse(res);
+    },
+
+    getLevels: async (token: string) => {
+        const res = await apiFetch('/levels/stats', {
+            method: 'GET'
+        }, token);
+        console.log(res)
+
+        return LevelsResponseSchema.parse(res);
     }
 }

@@ -90,3 +90,15 @@ export const CitizensResponseSchema = z.object({
 export type CitizenWallet = z.infer<typeof CitizenWalletSchema>;
 export type Citizen = z.infer<typeof CitizenSchema>;
 export type CitizensResponse = z.infer<typeof CitizensResponseSchema>;
+
+export const LevelResponseSchema = z.object({
+    id: z.string(),
+    name: z.string(),
+    minPointsRequired: z.number(),
+    userCount: z.number()
+})
+
+export const LevelsResponseSchema = z.array(LevelResponseSchema);
+
+export type Level = z.infer<typeof LevelResponseSchema>;
+export type LevelsResponse = z.infer<typeof LevelsResponseSchema>;
