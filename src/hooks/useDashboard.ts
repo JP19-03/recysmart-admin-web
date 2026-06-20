@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import { dashboardService } from "../services/dashboard.service";
+import { adminService } from "../services/admin.service";
 
 export const DASHBOARD_KEY = "dashboard";
 
@@ -11,7 +11,7 @@ export function useDashboard() {
     return useQuery({
         queryKey: [DASHBOARD_KEY, token],
         queryFn: () => {
-            return dashboardService.getDashboardData(token!);
+            return adminService.getDashboardData(token!);
         },
         enabled: !!token,
     });
