@@ -18,7 +18,7 @@ export function TableRowSkeleton() {
       <td className="px-6 py-4">
         <div className="h-6 bg-slate-200 rounded-full w-20"></div>
       </td>
-      <td className="px-6 py-4 w-64">
+      <td className="px-6 py-4 min-w-37.5 sm:w-64">
         <div className="flex justify-between mb-1.5">
           <div className="h-3 bg-slate-200 rounded w-8"></div>
           <div className="h-3 bg-slate-200 rounded w-12"></div>
@@ -82,7 +82,7 @@ export function IoTNetworkTable({
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-      <div className="p-6 border-b border-slate-100 flex justify-between items-center">
+      <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
         <div>
           <h3 className="text-lg font-bold text-slate-800">
             IoT Edge Network Status
@@ -93,14 +93,14 @@ export function IoTNetworkTable({
         </div>
         <Button
           onClick={onAddBin}
-          className="bg-slate-900 hover:bg-slate-800 text-white font-bold h-10 px-4 py-2"
+          className="bg-slate-900 hover:bg-slate-800 text-white font-bold h-10 px-4 py-2 w-full sm:w-auto"
         >
           <Plus className="w-4 h-4 mr-1 shrink-0" /> Add New Bin
         </Button>
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse">
+        <table className="min-w-200 w-full text-left border-collapse">
           <thead>
             <tr className="bg-slate-50 text-slate-400 text-xs uppercase tracking-widest border-b border-slate-100">
               <th className="px-6 py-4 font-bold">Bin ID / Location</th>
@@ -162,7 +162,7 @@ export function IoTNetworkTable({
                         {isOnline ? "Online" : "Offline"}
                       </span>
                     </td>
-                    <td className="px-6 py-4 w-64">
+                    <td className="px-6 py-4 min-w-37.5 sm:w-64">
                       <div className="flex items-center justify-between text-xs mb-1">
                         <span className={capacityStyle.textColor}>
                           {device.capacityPercentage}%

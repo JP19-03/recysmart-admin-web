@@ -30,21 +30,21 @@ export default function DashboardPage() {
   return (
     <main className="flex-1 flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-8 z-10 shrink-0">
+      <header className="py-4 sm:py-0 sm:h-20 bg-white border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between px-4 sm:px-8 gap-4 z-10 shrink-0">
         <h1 className="text-2xl font-bold text-slate-800">Global Overview</h1>
 
-        <div className="flex items-center gap-6">
-          <div className="relative">
+        <div className="flex items-center gap-4 sm:gap-6 w-full sm:w-auto">
+          <div className="relative flex-1 sm:flex-initial">
             <Search className="absolute left-3 top-2.5 text-slate-400 w-4 h-4" />
             <input
               type="text"
               placeholder="Search by Bin ID or location..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 bg-slate-50 w-64 text-slate-700"
+              className="pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 bg-slate-50 w-full sm:w-64 text-slate-700"
             />
           </div>
-          <button className="relative text-slate-400 hover:text-slate-600 transition-colors">
+          <button className="relative text-slate-400 hover:text-slate-600 transition-colors shrink-0">
             <Bell className="w-6 h-6" />
             <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
           </button>
