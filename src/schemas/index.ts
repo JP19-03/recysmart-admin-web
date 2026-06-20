@@ -62,3 +62,31 @@ export type LogInFormData = z.infer<typeof DraftLogInSchema>;
 export type User = z.infer<typeof UserAPIResponseSchema>;
 export type DashboardResponse = z.infer<typeof DashboardAPIResponseSchema>;
 export type IoTNetworkDevice = z.infer<typeof IoTNetworkDeviceSchema>;
+
+export const CitizenWalletSchema = z.object({
+    currentBalance: z.number(),
+    lifetimePoints: z.number(),
+    levelTitle: z.string(),
+});
+
+export const CitizenSchema = z.object({
+    id: z.string(),
+    email: z.string(),
+    name: z.string(),
+    role: z.string(),
+    isActive: z.boolean(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+    wallet: CitizenWalletSchema.nullable().optional(),
+});
+
+export const CitizensResponseSchema = z.object({
+    citizens: z.array(CitizenSchema),
+    total: z.number(),
+    page: z.number(),
+    limit: z.number(),
+});
+
+export type CitizenWallet = z.infer<typeof CitizenWalletSchema>;
+export type Citizen = z.infer<typeof CitizenSchema>;
+export type CitizensResponse = z.infer<typeof CitizensResponseSchema>;
