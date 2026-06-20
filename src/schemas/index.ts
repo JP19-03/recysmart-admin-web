@@ -25,8 +25,40 @@ export const UserAPIResponseSchema = z.object({
 
 export const LogInResponseSchema = z.object({
     user: UserAPIResponseSchema,
-    token: z.string(),
+    token: z.string()
+});
+
+export const StatusSchema = z.enum(["ONLINE", "OFFLINE"]);
+export const CapacityStatusSchema = z.enum(["NORMAL", "WARNING", "NEEDS_PICKUP"]);
+
+export const DashboardBinMetricsSchema = z.object({
+    active: z.number(),
+    total: z.number()
+});
+
+export const DashboardKpisSchema = z.object({
+    totalPlasticKg: z.number(),
+    co2AvoidedKg: z.number(),
+    couponsRedeemed: z.number(),
+    bins: DashboardBinMetricsSchema,
+    plasticGrowthPercentage: z.number(),
+});
+
+export const IoTNetworkDeviceSchema = z.object({
+    id: z.string(),
+    location: z.string(),
+    status: StatusSchema,
+    capacityPercentage: z.number(),
+    capacityStatus: CapacityStatusSchema,
+    lastAiScanAt: z.string(),
+});
+
+export const DashboardAPIResponseSchema = z.object({
+    kpis: DashboardKpisSchema,
+    iotNetwork: z.array(IoTNetworkDeviceSchema),
 });
 
 export type LogInFormData = z.infer<typeof DraftLogInSchema>;
 export type User = z.infer<typeof UserAPIResponseSchema>;
+export type DashboardResponse = z.infer<typeof DashboardAPIResponseSchema>;
+export type IoTNetworkDevice = z.infer<typeof IoTNetworkDeviceSchema>;
