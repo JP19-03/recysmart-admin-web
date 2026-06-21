@@ -128,3 +128,29 @@ export const PartnersDashboardResponseSchema = z.object({
 export type PartnerStats = z.infer<typeof PartnerStatsSchema>;
 export type Partner = z.infer<typeof PartnerSchema>;
 export type PartnersDashboardResponse = z.infer<typeof PartnersDashboardResponseSchema>;
+
+export const SmartBinStatusSchema = z.enum(["IDLE", "ACTIVE", "FULL", "MAINTENANCE"]);
+
+export const SmartBinSchema = z.object({
+    id: z.string(),
+    locationName: z.string(),
+    maxCapacity: z.number(),
+    currentCapacity: z.number(),
+    latitude: z.number(),
+    longitude: z.number(),
+    status: SmartBinStatusSchema,
+});
+
+export const CreateSmartBinSchema = z.object({
+    locationName: z.string().min(1, "Location name cannot be empty"),
+    maxCapacity: z.number().min(1, "Max capacity must be a positive number"),
+    latitude: z.number(),
+    longitude: z.number(),
+});
+
+export type SmartBinStatus = z.infer<typeof SmartBinStatusSchema>;
+export type SmartBin = z.infer<typeof SmartBinSchema>;
+export type CreateSmartBinData = z.infer<typeof CreateSmartBinSchema>;
+
+export const SmartBinsResponseSchema = z.array(SmartBinSchema);
+export type SmartBinsResponse = z.infer<typeof SmartBinsResponseSchema>;

@@ -1,5 +1,5 @@
 import { apiFetch } from "../lib/api";
-import { CitizensResponseSchema, DashboardAPIResponseSchema, LevelsResponseSchema, PartnersDashboardResponseSchema } from "../schemas";
+import { CitizensResponseSchema, DashboardAPIResponseSchema, LevelsResponseSchema, PartnersDashboardResponseSchema, SmartBinsResponseSchema, SmartBinSchema, CreateSmartBinData } from "../schemas";
 
 export const adminService = {
     getDashboardData: async (token: string) => {
@@ -33,5 +33,25 @@ export const adminService = {
         }, token);
 
         return PartnersDashboardResponseSchema.parse(res);
+    },
+
+    getBins: async (token: string) => {
+        const res = await apiFetch('/admin/bins', {
+            method: 'GET'
+        }, token);
+
+        return SmartBinsResponseSchema.parse(res);
+    },
+
+    registerBin: async (binData: CreateSmartBinData, token: string) => {
+        const res = await apiFetch('/admin/bins/register', {
+            method: 'POST',
+            body: JSON.stringify(binData),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }, token);
+
+        return SmartBinSchema.parse(res);
     }
 }
