@@ -102,3 +102,29 @@ export const LevelsResponseSchema = z.array(LevelResponseSchema);
 
 export type Level = z.infer<typeof LevelResponseSchema>;
 export type LevelsResponse = z.infer<typeof LevelsResponseSchema>;
+
+export const PartnerStatsSchema = z.object({
+    totalAllies: z.number(),
+    activeRewards: z.number(),
+    globalRedeems: z.number(),
+});
+
+export const PartnerSchema = z.object({
+    id: z.string(),
+    companyName: z.string(),
+    ruc: z.string(),
+    logoUrl: z.string().nullable().optional(),
+    isActive: z.boolean(),
+    activeRewardsCount: z.number(),
+    totalCouponsRedeemed: z.number(),
+    pointsReclaimed: z.number(),
+});
+
+export const PartnersDashboardResponseSchema = z.object({
+    stats: PartnerStatsSchema,
+    partners: z.array(PartnerSchema),
+});
+
+export type PartnerStats = z.infer<typeof PartnerStatsSchema>;
+export type Partner = z.infer<typeof PartnerSchema>;
+export type PartnersDashboardResponse = z.infer<typeof PartnersDashboardResponseSchema>;
