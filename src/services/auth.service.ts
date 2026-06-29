@@ -1,7 +1,9 @@
 import { ErrorResponseSchema, LogInFormData, LogInResponseSchema } from "../schemas";
 import { ApiError } from "../utils";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const BASE_URL = typeof window === 'undefined'
+    ? (process.env.BACKEND_URL ? `${process.env.BACKEND_URL}/api` : 'http://localhost:3001/api')
+    : process.env.NEXT_PUBLIC_API_URL;
 
 export const authService = {
     login: async (data: LogInFormData) => {
