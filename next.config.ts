@@ -5,14 +5,14 @@ const nextConfig: NextConfig = {
   async rewrites() {
     const backendUrl = process.env.BACKEND_URL;
 
-    // If no backend URL is set, do not apply rewrites (prevents crashes during local test setups)
     if (!backendUrl) {
       return [];
     }
 
     return [
       {
-        source: '/api/:path*',
+        // Matches all paths starting with /api/ EXCEPT those starting with /api/auth
+        source: '/api/:path((?!auth(?:/|$)).*)',
         destination: `${backendUrl}/api/:path*`,
       },
     ];
