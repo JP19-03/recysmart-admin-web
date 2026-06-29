@@ -1,5 +1,5 @@
 import { apiFetch } from "../lib/api";
-import { CitizensResponseSchema, DashboardAPIResponseSchema, LevelsResponseSchema, PartnersDashboardResponseSchema, SmartBinsResponseSchema, SmartBinSchema, CreateSmartBinData } from "../schemas";
+import { CitizensResponseSchema, DashboardAPIResponseSchema, LevelsResponseSchema, PartnersDashboardResponseSchema, SmartBinsResponseSchema, SmartBinSchema, CreateSmartBinData, RegisterAllyFormData } from "../schemas";
 
 export const adminService = {
     getDashboardData: async (token: string) => {
@@ -53,5 +53,20 @@ export const adminService = {
         }, token);
 
         return SmartBinSchema.parse(res);
+    },
+
+    registerAlly: async (allyData: RegisterAllyFormData, token: string) => {
+        const payload = {
+            ...allyData,
+            logoUrl: allyData.logoUrl ? allyData.logoUrl : undefined
+        };
+        const res = await apiFetch('/auth/register/ally', {
+            method: 'POST',
+            body: JSON.stringify(payload),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }, token);
+        return res;
     }
 }

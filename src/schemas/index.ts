@@ -154,3 +154,22 @@ export type CreateSmartBinData = z.infer<typeof CreateSmartBinSchema>;
 
 export const SmartBinsResponseSchema = z.array(SmartBinSchema);
 export type SmartBinsResponse = z.infer<typeof SmartBinsResponseSchema>;
+
+export const RegisterAllySchema = z.object({
+  name: z.string().min(1, "El nombre del administrador es requerido"),
+  email: z.string().min(1, "El correo electrónico es requerido").email("Email inválido"),
+  password: z.string()
+    .min(8, "La contraseña debe tener al menos 8 caracteres")
+    .regex(/[a-z]/, "Debe contener al menos una letra minúscula")
+    .regex(/[A-Z]/, "Debe contener al menos una letra mayúscula")
+    .regex(/\d/, "Debe contener al menos un número")
+    .regex(/[^a-zA-Z\d]/, "Debe contener al menos un símbolo (ej. !@#$)"),
+  companyName: z.string().min(1, "El nombre de la empresa es requerido"),
+  ruc: z.string()
+    .min(11, "El RUC debe tener exactamente 11 dígitos")
+    .max(11, "El RUC debe tener exactamente 11 dígitos")
+    .regex(/^\d+$/, "El RUC debe contener sólo números"),
+  logoUrl: z.string().url("URL de logotipo inválida").optional().or(z.literal("")),
+});
+
+export type RegisterAllyFormData = z.infer<typeof RegisterAllySchema>;

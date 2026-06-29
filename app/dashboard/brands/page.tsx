@@ -8,6 +8,7 @@ import {
   PartnerCardSkeleton,
 } from "@/components/dashboard/PartnerCard";
 import { Partner } from "@/src/schemas";
+import { RegisterAllyDialog } from "./_components/RegisterAllyDialog";
 import {
   Building2,
   Gift,
@@ -30,6 +31,7 @@ export default function PartnerBrandsPage() {
   const { data, error, isLoading, isError } = usePartners();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState<CategoryFilter>("ALL");
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
   // Local state to simulate status changes
   const [localStatuses, setLocalStatuses] = useState<Record<string, boolean>>(
@@ -139,6 +141,14 @@ export default function PartnerBrandsPage() {
         </div>
 
         <div className="flex items-center gap-4 sm:gap-6 w-full sm:w-auto">
+          {/* Registrar Aliado Button */}
+          <button
+            onClick={() => setIsRegisterOpen(true)}
+            className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm rounded-lg cursor-pointer transition-all shadow-xs shrink-0"
+          >
+            Registrar Aliado
+          </button>
+
           <div className="relative flex-1 sm:flex-initial">
             <Search className="absolute left-3 top-2.5 text-slate-400 w-4 h-4" />
             <input
@@ -321,6 +331,12 @@ export default function PartnerBrandsPage() {
           </>
         )}
       </div>
+
+      {/* Register Ally Dialog Modal Drawer */}
+      <RegisterAllyDialog
+        open={isRegisterOpen}
+        onClose={() => setIsRegisterOpen(false)}
+      />
     </main>
   );
 }
