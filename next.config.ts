@@ -11,8 +11,8 @@ const nextConfig: NextConfig = {
 
     return [
       {
-        // Matches all paths starting with /api/ EXCEPT those starting with /api/auth
-        source: '/api/:path((?!auth(?:/|$)).*)',
+        // Exclude only NextAuth internal endpoints from the backend rewrite
+        source: '/api/:path((?!auth/(?:session|callback|signin|signout|csrf|providers|error)(?:/|$)).*)',
         destination: `${backendUrl}/api/:path*`,
       },
     ];

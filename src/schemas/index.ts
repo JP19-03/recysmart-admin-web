@@ -4,8 +4,8 @@ export const SuccessResponseSchema = z.object({
     message: z.string(),
 });
 export const ErrorResponseSchema = z.object({
-    message: z.array(z.string()),
-    statusCode: z.number(),
+    message: z.union([z.string(), z.array(z.string())]).transform((val) => typeof val === "string" ? [val] : val),
+    statusCode: z.number().optional(),
 });
 
 export const DraftLogInSchema = z.object({
