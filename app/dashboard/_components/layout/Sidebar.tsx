@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import React, { useState } from "react";
 import { NavItem } from "./NavItem";
 import {
@@ -12,7 +12,8 @@ import {
   Store,
   X,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  LogOut
 } from "lucide-react";
 
 interface SidebarProps {
@@ -153,26 +154,50 @@ export function Sidebar({
         </div>
 
         {/* Profile section footer */}
-        <div className={`p-4 border-t border-slate-800 bg-slate-900/50 shrink-0 ${
-          collapsed ? "md:flex md:justify-center" : ""
-        }`}>
-          <div className="flex items-center px-2" title={collapsed ? (session?.user?.name || "System Admin") : undefined}>
-            <img
-              src={session?.user?.image || "https://i.pravatar.cc/150?img=11"}
-              alt={session?.user?.name || "Admin"}
-              className="w-10 h-10 rounded-full border-2 border-slate-700 object-cover shrink-0"
-            />
+        <div className="p-4 border-t border-slate-800 bg-slate-900/50 shrink-0 space-y-3">
+          <div className={`flex items-center px-2 ${collapsed ? "md:justify-center" : "justify-between"}`}>
+            <div className="flex items-center min-w-0" title={collapsed ? (session?.user?.name || "System Admin") : undefined}>
+              <img
+                src={session?.user?.image || "https://i.pravatar.cc/150?img=11"}
+                alt={session?.user?.name || "Admin"}
+                className="w-10 h-10 rounded-full border-2 border-slate-700 object-cover shrink-0"
+              />
+              {!collapsed && (
+                <div className="ml-3 overflow-hidden animate-in fade-in duration-200">
+                  <p className="text-sm font-bold text-white truncate">
+                    {session?.user?.name || "System Admin"}
+                  </p>
+                  <p className="text-xs text-slate-500 truncate">
+                    {session?.user?.email || "admin@recysmart.com"}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Logout button (only if not collapsed) */}
             {!collapsed && (
-              <div className="ml-3 overflow-hidden animate-in fade-in duration-200">
-                <p className="text-sm font-bold text-white truncate">
-                  {session?.user?.name || "System Admin"}
-                </p>
-                <p className="text-xs text-slate-500 truncate">
-                  {session?.user?.email || "admin@recysmart.com"}
-                </p>
-              </div>
+              <button
+                onClick={() => signOut({ callbackUrl: "/login" })}
+                className="p-2 rounded hover:bg-slate-800 text-slate-400 hover:text-white transition-colors cursor-pointer shrink-0 ml-2"
+                title="Cerrar Sesión"
+              >
+                <LogOut className="w-5 h-5" />
+              </button>
             )}
           </div>
+
+          {/* Logout button (only if collapsed, rendered below avatar) */}
+          {collapsed && (
+            <div className="hidden md:flex justify-center">
+              <button
+                onClick={() => signOut({ callbackUrl: "/login" })}
+                className="p-2 rounded hover:bg-slate-800 text-slate-400 hover:text-white transition-colors cursor-pointer"
+                title="Cerrar Sesión"
+              >
+                <LogOut className="w-5 h-5" />
+              </button>
+            </div>
+          )}
         </div>
       </aside>
     </>

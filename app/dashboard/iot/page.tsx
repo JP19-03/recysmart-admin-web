@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { useBins, useRegisterBin } from "@/src/hooks/useBins";
+import { useBins } from "@/src/hooks/useBins";
 import { KpiCard, KpiCardSkeleton } from "@/components/dashboard/KpiCard";
 import {
   IoTDeviceCard,
   IoTDeviceCardSkeleton,
 } from "@/components/dashboard/IoTDeviceCard";
+import { RegisterBinDialog } from "@/components/dashboard/RegisterBinDialog";
 import { SmartBin, CreateSmartBinData } from "@/src/schemas";
 import {
   Cpu,
@@ -34,8 +35,7 @@ interface ToastState {
 
 export default function IotEdgeNetworkPage() {
   const { data, error, isLoading, isError } = useBins();
-  const registerMutation = useRegisterBin();
-
+  
   // Navigation states
   const [viewMode, setViewMode] = useState<"GRID" | "MAP">("GRID");
   const [searchQuery, setSearchQuery] = useState("");
@@ -48,11 +48,6 @@ export default function IotEdgeNetworkPage() {
 
   // Modal registration form state
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
-  const [locationName, setLocationName] = useState("");
-  const [maxCapacity, setMaxCapacity] = useState<number>(100);
-  const [latitude, setLatitude] = useState<number>(-12.0463);
-  const [longitude, setLongitude] = useState<number>(-77.0427);
-  const [formError, setFormError] = useState<string | null>(null);
 
   // In-app interactive feedback toasts
   const [toast, setToast] = useState<ToastState>({
@@ -69,52 +64,6 @@ export default function IotEdgeNetworkPage() {
     setTimeout(() => {
       setToast((prev) => ({ ...prev, visible: false }));
     }, 4000);
-  };
-
-  // Helper autofill coordinates matching Lima university campus bounds
-  const handleAutofillCoordinates = () => {
-    // Generate slight random offset around the core campus
-    const campusLat = -12.046374 + (Math.random() - 0.5) * 0.005;
-    const campusLng = -77.042793 + (Math.random() - 0.5) * 0.005;
-    setLatitude(parseFloat(campusLat.toFixed(6)));
-    setLongitude(parseFloat(campusLng.toFixed(6)));
-    showToast("Mocked GPS coordinates filled for university area", "info");
-  };
-
-  // Submit registration form
-  const handleRegisterSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormError(null);
-
-    if (!locationName.trim()) {
-      setFormError("Location name cannot be empty");
-      return;
-    }
-    if (maxCapacity <= 0) {
-      setFormError("Max capacity must be a positive number of bottles");
-      return;
-    }
-
-    try {
-      const payload: CreateSmartBinData = {
-        locationName,
-        maxCapacity,
-        latitude,
-        longitude,
-      };
-
-      await registerMutation.mutateAsync(payload);
-
-      // Reset form and close
-      setLocationName("");
-      setMaxCapacity(100);
-      setLatitude(-12.0463);
-      setLongitude(-77.0427);
-      setIsRegisterOpen(false);
-      showToast("Smart Bin registered successfully", "success");
-    } catch (err: any) {
-      setFormError(err?.message || "Failed to register new Smart Bin device.");
-    }
   };
 
   // Device actions mocks
@@ -748,137 +697,10 @@ export default function IotEdgeNetworkPage() {
       </div>
 
       {/* Register ESP32 Glassmorphic Modal */}
-      {isRegisterOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs animate-in fade-in duration-200 px-4">
-          <div
-            className="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-md overflow-hidden animate-in scale-in duration-200"
-            role="dialog"
-          >
-            {/* Modal Header */}
-            <div className="px-6 py-4 bg-slate-900 text-white flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <Cpu className="w-5 h-5 text-green-400" />
-                <h3 className="font-bold text-base">Register New ESP32 Bin</h3>
-              </div>
-              <button
-                onClick={() => setIsRegisterOpen(false)}
-                className="text-slate-400 hover:text-white transition-colors cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Modal Form */}
-            <form onSubmit={handleRegisterSubmit} className="p-6 space-y-4">
-              {formError && (
-                <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-lg font-medium flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 shrink-0 text-red-500" />
-                  <span>{formError}</span>
-                </div>
-              )}
-
-              {/* Location Input */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-                  Location Name
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. Science Faculty, Floor 2"
-                  value={locationName}
-                  onChange={(e) => setLocationName(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white transition-all"
-                  required
-                />
-              </div>
-
-              {/* Max Capacity Input */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-                  Max Capacity (Bottle Count)
-                </label>
-                <input
-                  type="number"
-                  min="1"
-                  placeholder="e.g. 100"
-                  value={maxCapacity}
-                  onChange={(e) =>
-                    setMaxCapacity(parseInt(e.target.value) || 0)
-                  }
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white transition-all"
-                  required
-                />
-              </div>
-
-              {/* Coordinates Inputs */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-                    Latitude
-                  </label>
-                  <input
-                    type="number"
-                    step="0.000001"
-                    placeholder="-12.0463"
-                    value={latitude}
-                    onChange={(e) =>
-                      setLatitude(parseFloat(e.target.value) || 0)
-                    }
-                    className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white transition-all"
-                    required
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-                    Longitude
-                  </label>
-                  <input
-                    type="number"
-                    step="0.000001"
-                    placeholder="-77.0427"
-                    value={longitude}
-                    onChange={(e) =>
-                      setLongitude(parseFloat(e.target.value) || 0)
-                    }
-                    className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white transition-all"
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* Autofill helper */}
-              <button
-                type="button"
-                onClick={handleAutofillCoordinates}
-                className="w-full py-2 border border-dashed border-slate-350 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
-              >
-                <Target className="w-3.5 h-3.5 text-slate-400" />
-                Fill Campus GPS Coordinates
-              </button>
-
-              {/* Submit Buttons */}
-              <div className="flex gap-3 pt-3">
-                <button
-                  type="button"
-                  onClick={() => setIsRegisterOpen(false)}
-                  className="flex-1 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-lg text-xs font-bold text-slate-600 transition-all cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={registerMutation.isPending}
-                  className="flex-1 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
-                >
-                  {registerMutation.isPending
-                    ? "Registering..."
-                    : "Register Bin"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      <RegisterBinDialog
+        open={isRegisterOpen}
+        onClose={() => setIsRegisterOpen(false)}
+      />
     </main>
   );
 }

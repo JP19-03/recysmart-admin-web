@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useDashboard } from "../../src/hooks/index";
 import { KpiCard, KpiCardSkeleton } from "@/components/dashboard/KpiCard";
 import { IoTNetworkTable } from "@/components/dashboard/IoTNetworkTable";
+import { RegisterBinDialog } from "@/components/dashboard/RegisterBinDialog";
 import {
   Recycle,
   Cloud,
@@ -17,6 +18,7 @@ import {
 export default function DashboardPage() {
   const { data, error, isLoading, isError } = useDashboard();
   const [searchQuery, setSearchQuery] = useState("");
+  const [isAddBinOpen, setIsAddBinOpen] = useState(false);
 
   const filteredNetwork =
     data?.iotNetwork.filter((device) => {
@@ -130,11 +132,17 @@ export default function DashboardPage() {
             <IoTNetworkTable
               devices={filteredNetwork}
               isLoading={false}
-              onAddBin={() => console.log("Add bin clicked")}
+              onAddBin={() => setIsAddBinOpen(true)}
             />
           </>
         )}
       </div>
+
+      {/* Register Bin Modal Dialog */}
+      <RegisterBinDialog
+        open={isAddBinOpen}
+        onClose={() => setIsAddBinOpen(false)}
+      />
     </main>
   );
 }
