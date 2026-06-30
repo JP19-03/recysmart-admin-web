@@ -40,9 +40,11 @@ export function IoTNetworkTable({
   isLoading = false,
   onAddBin,
 }: IoTNetworkTableProps) {
-  const formatRelativeTime = (dateString: string) => {
+  const formatRelativeTime = (dateString?: string | null) => {
+    if (!dateString) return "No scans yet";
     try {
       const date = new Date(dateString);
+      if (isNaN(date.getTime())) return "No scans yet";
       const now = new Date();
       const diffMs = now.getTime() - date.getTime();
       const diffMins = Math.floor(diffMs / 60000);
@@ -54,7 +56,7 @@ export function IoTNetworkTable({
       const diffDays = Math.floor(diffHours / 24);
       return `${diffDays} days ago`;
     } catch (e) {
-      return dateString;
+      return "No scans yet";
     }
   };
 

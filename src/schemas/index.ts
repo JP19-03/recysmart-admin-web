@@ -50,7 +50,7 @@ export const IoTNetworkDeviceSchema = z.object({
     status: StatusSchema,
     capacityPercentage: z.number(),
     capacityStatus: CapacityStatusSchema,
-    lastAiScanAt: z.string(),
+    lastAiScanAt: z.string().nullable().optional(),
 });
 
 export const DashboardAPIResponseSchema = z.object({
